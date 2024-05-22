@@ -40,7 +40,7 @@ export const handler = async (): Promise<APIGatewayProxyResultV2> => {
 			},
 		],
 		paths: {
-			'/v1/todo': {
+			'/v1/todos': {
 				post: {
 					summary: 'Create a new Todo item.',
 					parameters: [securityHeaderConfig],
@@ -96,7 +96,7 @@ export const handler = async (): Promise<APIGatewayProxyResultV2> => {
 					},
 				},
 			},
-			'/v1/todo/{todoId}': {
+			'/v1/todos/{todoId}': {
 				get: {
 					summary: 'Get a todo item by id',
 					parameters: [securityHeaderConfig, todoIdPathParameter],
