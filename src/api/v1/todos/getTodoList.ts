@@ -12,7 +12,7 @@ export const handlerImplementation = async (
 
 	logger.debug('todosList', { todosList });
 
-	return formatAPIGatewayResponse({ ...todosList }, 200, event);
+	return formatAPIGatewayResponse({ items: todosList }, 200, event);
 };
 
 /**
