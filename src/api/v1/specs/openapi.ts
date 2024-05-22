@@ -35,12 +35,8 @@ export const handler = async (): Promise<APIGatewayProxyResultV2> => {
 		},
 		servers: [
 			{
-				url: 'xxxxxx',
-				description: 'developer environment',
-			},
-			{
-				url: 'http://0.0.0.0:3000',
-				description: 'test locally',
+				url: 'https://yrl9sij6o4.execute-api.us-east-1.amazonaws.com',
+				description: 'AWS APIGateway',
 			},
 		],
 		paths: {
