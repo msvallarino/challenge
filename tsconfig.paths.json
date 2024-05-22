@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"baseUrl": ".",
+		"paths": {
+			"@ServiceConstants": ["src/ServiceConstants"],
+			"@models/*": ["src/models/*"],
+			"@services/*": ["src/services/*"],
+			"@utils/*": ["src/utils/*"],
+			"@libs/*": ["src/libs/*"],
+			"@schemas/*": ["src/schemas/*"],
+			"@aws-clients/*": ["src/aws-sdk/*"]
+		}
+	}
+}
