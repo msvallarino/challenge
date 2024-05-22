@@ -1,0 +1,148 @@
+service: todo-app
+plugins:
+  - serverless-esbuild
+  - serverless-offline
+
+package:
+  individually: true
+
+frameworkVersion: '>=3.38.0'
+
+custom:
+  serviceName: ${self:service}
+  todoDynamoTableName: challenge-todo-table
+  esbuild:
+    bundle: true
+    minify: false
+    external:
+      - '@aws-sdk/client-dynamodb'
+      - '@aws-sdk/lib-dynamodb'
+    watch:
+      pattern: ['src/**/*.ts'] # match only typescript files in src directory
+      ignore: ['temp/**/*']
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: ${opt:region,'us-east-1'}
+  logRetentionInDays: 30
+  logs:
+    httpApi: true
+  httpApi:
+    metrics: true
+    cors: true
+  environment:
+    ENVIRONMENT: ${opt:stage}
+    TABLE_NAME: ${self:custom.todoDynamoTableName}
+    SECURITY_KEY: ${env:SECURITY_KEY}
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:*
+      Resource: 'arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/*'
+    - Effect: Allow
+      Action:
+        - sts:AssumeRole
+      Resource: '*'
+
+functions:
+  specs:
+    handler: src/api/v1/specs/openapi.handler
+    timeout: 5
+    memorySize: 128
+    events:
+      - httpApi:
+          method: get
+          cors: true
+          path: /v1/specs
+
+  getTodo:
+    handler: src/api/v1/todos/{todoId}/getTodo.handler
+    timeout: 5
+    memorySize: 128
+    events:
+      - httpApi:
+          method: get
+          cors: true
+          path: /v1/todos/{todoId}
+          request:
+            parameters:
+              paths:
+                todoId: true
+  getTodosList:
+    handler: src/api/v1/todos/getTodoList.handler
+    timeout: 5
+    memorySize: 128
+    events:
+      - httpApi:
+          method: get
+          cors: true
+          path: /v1/todos
+  createTodo:
+    handler: src/api/v1/todos/createTodo.handler
+    timeout: 5
+    memorySize: 128
+    events:
+      - httpApi:
+          method: post
+          cors: true
+          path: /v1/todos
+  updateTodo:
+    handler: src/api/v1/todos/{todoId}/updateTodo.handler
+    timeout: 5
+    memorySize: 128
+    events:
+      - httpApi:
+          method: patch
+          cors: true
+          path: /v1/todos/{todoId}
+          request:
+            parameters:
+              paths:
+                todoId: true
+  removeTodo:
+    handler: src/api/v1/todos/{todoId}/removeTodo.handler
+    timeout: 5
+    memorySize: 128
+    events:
+      - httpApi:
+          method: delete
+          cors: true
+          path: /v1/todos/{todoId}
+          request:
+            parameters:
+              paths:
+                todoId: true
+
+resources:
+  Resources:
+    # DynamoDB Resources
+    TodoTable:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        TableName: ${self:custom.todoDynamoTableName}
+        AttributeDefinitions:
+          - AttributeName: todoId
+            AttributeType: S
+          - AttributeName: title
+            AttributeType: S
+          - AttributeName: description
+            AttributeType: S
+          - AttributeName: dueDate
+            AttributeType: S
+        KeySchema:
+          - AttributeName: todoId
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true
+
+  Outputs:
+    HttpApiId:
+      Description: The HTTP API ID
+      Value:
+        Ref: HttpApi
+      Export:
+        Name: ${self:custom.serviceName}:${opt:stage}:HttpApiId
