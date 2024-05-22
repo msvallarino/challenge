@@ -1,0 +1,221 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "challenge_regression_test",
+    "collectionId": "d0284fdc-0c1c-459c-b028-3b157d8b8f95",
+    "dateExported": "2024-05-22T18:00:17.241Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "c657c30c-ed23-48cf-a876-72a8be184a6e",
+            "colId": "d0284fdc-0c1c-459c-b028-3b157d8b8f95",
+            "containerId": "",
+            "name": "getAllTodos - empty",
+            "url": "{{baseUrl}}/v1/todos",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2024-05-22T16:40:57.983Z",
+            "modified": "2024-05-22T17:59:54.204Z",
+            "headers": [
+                {
+                    "name": "x-api-key",
+                    "value": "{{x-api-key}}"
+                }
+            ],
+            "tests": [
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "{\"items\":[]}"
+                },
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ]
+        },
+        {
+            "_id": "79a92c6f-7452-4bf8-b867-25daa255a824",
+            "colId": "d0284fdc-0c1c-459c-b028-3b157d8b8f95",
+            "containerId": "",
+            "name": "createTodo",
+            "url": "{{baseUrl}}/v1/todos",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2024-05-22T16:42:17.490Z",
+            "modified": "2024-05-22T17:59:58.614Z",
+            "headers": [
+                {
+                    "name": "x-api-key",
+                    "value": "{{x-api-key}}"
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n\t\"title\": \"First TODO\",\n\t\"description\": \"Do missing unit test\",\n\t\"dueDate\": \"2024-05-25\"\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "201"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "todoId"
+                },
+                {
+                    "type": "set-env-var",
+                    "custom": "json.todoId",
+                    "action": "setto",
+                    "value": "{{todoId, global}}"
+                }
+            ]
+        },
+        {
+            "_id": "ec012854-ec9c-429f-901c-905937e1fcd6",
+            "colId": "d0284fdc-0c1c-459c-b028-3b157d8b8f95",
+            "containerId": "",
+            "name": "getAllTodos - should be one",
+            "url": "{{baseUrl}}/v1/todos",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2024-05-22T16:44:14.537Z",
+            "modified": "2024-05-22T18:00:02.038Z",
+            "headers": [
+                {
+                    "name": "x-api-key",
+                    "value": "{{x-api-key}}"
+                }
+            ],
+            "tests": [
+                {
+                    "type": "json-query",
+                    "custom": "json.items",
+                    "action": "count",
+                    "value": "1"
+                }
+            ]
+        },
+        {
+            "_id": "e3028bae-5b0c-4f30-8eea-fe78e299b5e1",
+            "colId": "d0284fdc-0c1c-459c-b028-3b157d8b8f95",
+            "containerId": "",
+            "name": "getById",
+            "url": "{{baseUrl}}/v1/todos/{{todoId}}",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2024-05-22T16:44:56.556Z",
+            "modified": "2024-05-22T18:00:04.864Z",
+            "headers": [
+                {
+                    "name": "x-api-key",
+                    "value": "{{x-api-key}}"
+                }
+            ],
+            "tests": [
+                {
+                    "type": "json-query",
+                    "custom": "json.todoId",
+                    "action": "equal",
+                    "value": "{{todoId}}"
+                }
+            ]
+        },
+        {
+            "_id": "b3188af8-a02d-4324-a635-90f2b1842877",
+            "colId": "d0284fdc-0c1c-459c-b028-3b157d8b8f95",
+            "containerId": "",
+            "name": "updateTodo",
+            "url": "{{baseUrl}}/v1/todos/{{todoId}}",
+            "method": "PATCH",
+            "sortNum": 50000,
+            "created": "2024-05-22T16:45:33.187Z",
+            "modified": "2024-05-22T18:00:08.279Z",
+            "headers": [
+                {
+                    "name": "x-api-key",
+                    "value": "{{x-api-key}}"
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n\t\"description\": \"Updated description\"\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "json-query",
+                    "custom": "json.description",
+                    "action": "equal",
+                    "value": "Updated description"
+                }
+            ]
+        },
+        {
+            "_id": "a6251474-1ed2-4aff-837b-7c3b1779fee0",
+            "colId": "d0284fdc-0c1c-459c-b028-3b157d8b8f95",
+            "containerId": "",
+            "name": "deleteTodo",
+            "url": "{{baseUrl}}/v1/todos/{{todoId}}",
+            "method": "DELETE",
+            "sortNum": 53750,
+            "created": "2024-05-22T16:46:44.426Z",
+            "modified": "2024-05-22T18:00:11.170Z",
+            "headers": [
+                {
+                    "name": "x-api-key",
+                    "value": "{{x-api-key}}"
+                }
+            ],
+            "tests": [
+                {
+                    "type": "json-query",
+                    "custom": "json.todoId",
+                    "action": "equal",
+                    "value": "{{todoId}}"
+                }
+            ]
+        },
+        {
+            "_id": "0e6f1353-14bc-448e-a300-2a308acdf3de",
+            "colId": "d0284fdc-0c1c-459c-b028-3b157d8b8f95",
+            "containerId": "",
+            "name": "getAllTodos - empty again",
+            "url": "{{baseUrl}}/v1/todos",
+            "method": "GET",
+            "sortNum": 57500,
+            "created": "2024-05-22T16:46:19.618Z",
+            "modified": "2024-05-22T18:00:14.608Z",
+            "headers": [
+                {
+                    "name": "x-api-key",
+                    "value": "{{x-api-key}}"
+                }
+            ],
+            "tests": [
+                {
+                    "type": "json-query",
+                    "custom": "json.items",
+                    "action": "count",
+                    "value": "0"
+                }
+            ]
+        }
+    ],
+    "settings": {
+        "runOptions": {
+            "delay": 1000,
+            "iterations": 1,
+            "dataFilePath": ""
+        }
+    },
+    "ref": "9sCeIrs7cr8h8_gHSicRuE6_H1EBBnCGU3h89FkhSLk5PDsRlErAQBjTPVR4fNZXfo9-P2AIUW9tXBK_GAd9Yw"
+}

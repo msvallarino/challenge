@@ -1,0 +1,23 @@
+{
+	"clientName": "Thunder Client",
+	"environmentName": "(Global Env)",
+	"environmentId": "d8d9a602-83bf-4f29-ad08-2a8692dfdbee",
+	"dateExported": "2024-05-22T18:00:30.715Z",
+	"version": "1.2",
+	"global": true,
+	"variables": [
+		{
+			"name": "baseUrl",
+			"value": "https://yrl9sij6o4.execute-api.us-east-1.amazonaws.com"
+		},
+		{
+			"name": "todoId",
+			"value": "123"
+		},
+		{
+			"name": "x-api-key",
+			"value": "REPLACE_ME"
+		}
+	],
+	"ref": "fyy-scC48F3riiT2uW09T6Mf3eVJLMm-vrO-m9TuiMxUzknc9WsUAoVCQX7iGfOT"
+}
